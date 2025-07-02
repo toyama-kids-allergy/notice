@@ -1,14 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>お知らせ</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background: #f4f6f8;
+      padding: 1rem;
+      margin: 0;
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.01);
+    }
+    .category {
+      font-weight: bold;
+      color: #0077cc;
+      margin-bottom: 0.2rem;
+      font-size: 0.9rem;
+    }
+    .date {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+    .message {
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.4;
+    }
+  </style>
 </head>
 <body>
   <h2>お知らせ</h2>
-  <ul id="news"></ul>
+  <div id="news"></div>
+
   <script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAdqh4wPlwFxKUdDHntij9Jnn2acBE9yKACISfKbmSbuY8tiw-oVPzClgbL6td-Q46dJg6dEempjE9/pub?gid=0&single=true&output=csv'; // CSV URL
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAdqh4wPlwFxKUdDHntij9Jnn2acBE9yKACISfKbmSbuY8tiw-oVPzClgbL6td-Q46dJg6dEempjE9/pub?gid=0&single=true&output=csv'; // ← あなたのスプレッドシートのCSV URLに変更
+
     fetch(csvUrl)
       .then(res => res.text())
       .then(data => {
@@ -16,7 +60,13 @@
         let html = '';
         rows.forEach(row => {
           const [category, date, message] = row.split(',');
-          html += `<li><strong>[${category}] ${date}:</strong> ${message}</li>`;
+          html += `
+            <div class="card">
+              <div class="category">[${category}]</div>
+              <div class="date">${date}</div>
+              <div class="message">${message}</div>
+            </div>
+          `;
         });
         document.getElementById('news').innerHTML = html;
       });
